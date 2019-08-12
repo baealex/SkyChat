@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, sharink-to-fit=no">
+	<title>BLEX - CHAT</title>
+	<meta name="theme-color" content="#603020">
+	<link rel="stylesheet" href="/main.css">
+</head>
+<body>
+	<div id="first" class="first">
+		<input id="name" class="name" type="text" autocomplete="off">
+		<button class="name-button" onclick="start()">대화 참여</button>
+	</div>
+	<div class="second">
+		<div id="chatLog" class="chatLog">
+			<p>시스템 : 매너 있는 채팅 부탁드립니다 :)</p>
+		</div>
+		<div id="chatBox" class="chatBox">
+			<input id="message" class="message" onkeydown="javascript:checkEnter();" type="text" autocomplete="off">
+			<button class="chat-button" onclick="chat()">▶</button>
+		</div>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="/main.js"></script>
+</body>
+</html>
