@@ -4,6 +4,16 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mysql = require('mysql');
 
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req,res) => {
+    res.sendFile(__dirname + '/views/client/list.html');
+});
+
+app.get('/chat', (req,res) => {
+	res.sendFile(__dirname + '/views/client/chat.html');
+});
+
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'baealex',
@@ -30,22 +40,6 @@ getChatHistory = (num) => {
 			console.log(err);
 	});
 };
-
-app.get('/', (req,res) => {
-	res.sendFile(__dirname + '/client/list.html');
-});
-
-app.get('/chat', (req,res) => {
-	res.sendFile(__dirname + '/client/chat.html');
-});
-
-app.get('/main.css', (req, res) => {
-	res.sendFile(__dirname + '/client/main.css');
-});
-
-app.get('/main.js', (req,res) => {
-	res.sendFile(__dirname + '/client/main.js');
-});
 
 io.on('connection', socket => {
 	var randomNick = ['감자탕', '조개탕', '온탕', '냉탕', '맛탕', '새우탕', '그라탕', '갈비탕', '백설탕', '쌍화탕', '탕탕탕'];
