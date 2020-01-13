@@ -1,0 +1,22 @@
+{
+  "name": "talking-on-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baealex/talking-on-web.git"
+  },
+  "keywords": [
+    "socket"
+  ],
+  "author": "baealex",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/baealex/talking-on-web/issues"
+  },
+  "homepage": "https://github.com/baealex/talking-on-web#readme"
+}
