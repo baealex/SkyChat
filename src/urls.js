@@ -3,8 +3,9 @@ var views   = require('./views');
 
 var app = express();
 
-app.get('/',         views.chatList);
-app.get('/chat/:id', views.chatRoom);
+app.get('/',         views.renderChatList );
+app.get('/chat',     views.chatList       );
+app.get('/chat/:id', views.renderChat     );
 
 app.use(express.static(__dirname + '/static'));
 

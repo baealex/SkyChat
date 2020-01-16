@@ -1,10 +1,16 @@
 var db = require('./db')
 
 module.exports = {
-    chatList: (req, res) => {
+    renderChatList: (req, res) => {
         res.sendFile(__dirname + '/templates/list.html');
     },
-    chatRoom: (req, res) => {
+    renderChat: (req, res) => {
         res.sendFile(__dirname + '/templates/chat.html');
+    },
+    chatList: (req, res) => {
+        rooms = db.roomList();
+        res.json({
+            rooms: rooms,
+        });
     },
 }

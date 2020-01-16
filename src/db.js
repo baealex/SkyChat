@@ -6,6 +6,10 @@ function dataSave(room, data) {
 }
 
 module.exports = {
+    roomList: () => {
+        return fs.readdirSync(__dirname + `/data_base`);
+    },
+
     dataPush: (room, data, name, text) => {
         data.userContent.push({
             name: name,

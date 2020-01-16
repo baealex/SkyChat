@@ -8,7 +8,7 @@ socket.on('receive message' + roomName, function(name, text) {
 	var tagP = document.createElement('p');
 	var msg = name + ' : ' + text;
 	if(name == $('#name').val()) {
-		tagP.className = 'myMessage';
+		tagP.className = 'my';
 		msg = text;
 	}
 	tagP.appendChild(document.createTextNode(msg))
@@ -31,7 +31,7 @@ socket.on(`${roomName} host out`, function() {
 
 function start() {
 	socket.emit('start', roomName, $('#name').val());
-	document.getElementById('first').style.display = "none";
+	document.getElementById('chatBarrier').style.display = "none";
 	document.getElementById('chatBox').style.position = "fixed";
 }
 
