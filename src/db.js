@@ -1,13 +1,15 @@
 const fs = require('fs')
 
+const dirSlash = (process.platform === 'win32') ? '\\' : '/';
+
 function dataSave(room, data) {
     data = JSON.stringify(data);
-    fs.writeFileSync(__dirname + `/data_base/${room}.json`, data, 'utf-8');
+    fs.writeFileSync(__dirname + `${dirSlash}data_base${dirSlash}${decodeURI(room)}.json`, data, 'utf-8');
 }
 
 module.exports = {
     roomList: () => {
-        return fs.readdirSync(__dirname + `/data_base`);
+        return fs.readdirSync(__dirname + `${dirSlash}data_base`);
     },
 
     dataPush: (room, data, name, text) => {
@@ -31,7 +33,7 @@ module.exports = {
 
     isHost: (room) => {
         try {
-            fs.statSync(__dirname + `/data_base/${room}.json`);
+            fs.statSync(__dirname + `${dirSlash}data_base${dirSlash}${decodeURI(room)}.json`);
             return false;
         }
         catch (err) {
@@ -53,11 +55,11 @@ module.exports = {
     dataSave: dataSave,
 
     dataLoad: (room) => {
-        var data = fs.readFileSync(__dirname + `/data_base/${room}.json`, 'utf-8');
+        var data = fs.readFileSync(__dirname + `${dirSlash}data_base${dirSlash}${decodeURI(room)}.json`, 'utf-8');
         return JSON.parse(data);
     },
 
     dataRemove: (room) => {
-        fs.unlinkSync(__dirname + `/data_base/${room}.json`);
+        fs.unlinkSync(__dirname + `${dirSlash}data_base${dirSlash}${decodeURI(room)}.json`);
     },
 }
