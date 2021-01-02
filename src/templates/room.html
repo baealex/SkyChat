@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, sharink-to-fit=no">
+	<title>SkyChat - Room List</title>
+	<meta name="theme-color" content="#603020">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container bg-light">
+		<div class="wrapper-2">
+			<input id="inputRoom" class="bg-gray round-input p-2" placeholder="접속할 방의 이름을 입력하세요.">
+			<button class="round-input" onclick="enterOrCreate()">
+				<i class="fas fa-sign-in-alt"></i>
+			</button>
+		</div>
+		<p class="font-size-s mt-3">생성된 방</p>
+		<ul class="room-list"></ul>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+    <script src="/js/select.js"></script>
+    <script src="/js/main.js"></script>
+	<script>
+        socket.emit('show-room');
+
+        socket.on('show-room', function(data) {
+            let result = '';
+            for(const room in data) {
+                result += `<li><a href="/chat/${room}">${room} (${data[room]})</a></li>`
+            }
+            select('.room-list').html(result);
+        });
+
+        function enterOrCreate() {
+			var inputRoom = select('#inputRoom').val();
+			if(inputRoom.length != 0) {
+				location.href = '/chat/' + inputRoom;
+			}
+		}
+
+        select('#inputRoom').on('keydown', function(event) {
+            if(event.keyCode == 13) {
+                enterOrCreate();
+            }
+        });
+	</script>
+</body>
+</html>

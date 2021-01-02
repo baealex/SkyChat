@@ -11,7 +11,7 @@
 <body class="bg-chat">
 	<div id="chatBarrier" class="barrier bg-kakao fill-full">
 		<input id="name" class="name bg-button round-input p-2" type="text" autocomplete="off">
-		<button class="name-button bg-button" onclick="start()">대화 참여</button>
+		<button class="name-button bg-button">대화 참여</button>
 	</div>
 	<div class="container">
 		<div id="chatLog" class="chat-log">
@@ -19,15 +19,63 @@
 		</div>
 		<div id="chatBox" class="chat-box">
 			<div class="container wrapper-2">
-				<input id="message" class="bg-light round-input p-1" onkeydown="javascript:checkEnter();" type="text" autocomplete="off">
-				<button class="chat-button bg-light round-input" onclick="chat()">
+				<input id="message" class="bg-light round-input p-1" type="text" autocomplete="off">
+				<button class="chat-button bg-light round-input" onclick="sendMessage()">
 					<i class="far fa-comment"></i>
 				</button>
 			</div>
 		</div>
-	</div>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.1.js"></script>
-	<script src="/js/chat.js"></script>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/select.js"></script>
+    <script src="/js/main.js"></script>
+	<script>
+        var room = location.pathname.split('/')[2];
+
+        function sendMessage() {
+            var username = select('#name').val();
+            var text = select('#message').val();
+
+            if(text.length !== 0) {
+                socket.emit('send-message', username, text);
+                select('#message').val('');
+                select('#message').focus();
+            }
+        }
+
+        select('#chatBarrier button').on('click', function(event) {
+            socket.emit('chat-start', room, select('#name').val());
+        });
+
+        select('#message').on('keydown', function(event) {
+            if(event.keyCode == 13) {
+                sendMessage();
+            }
+        });
+
+        socket.on('exist-username', function() {
+            alert('이미 존재하는 닉네임입니다.');
+        });
+
+        socket.on('client-hello', function() {
+            select('#chatBarrier').direct().style.display = "none";
+            select('#chatBox').direct().style.position = "fixed";
+        });
+
+        socket.on('receive-message', function(username, text) {
+            var isMine = username == select('#name').val();
+            var chatLog = select('#chatLog');
+            chatLog.append(`
+                <p${isMine ? ' class="my"' : ''}>
+                    ${isMine ? '' : username + ' : '}${text}
+                </p>
+            `);
+            chatLog.direct().scrollTop = chatLog.direct().scrollHeight;
+        });
+
+        socket.on('change name', function(name) {
+            select('#name').val(name);
+        });
+    </script>
 </body>
 </html>

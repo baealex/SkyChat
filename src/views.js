@@ -1,16 +1,15 @@
-var db = require('./db')
+import path from 'path';
 
-module.exports = {
-    renderChatList: (req, res) => {
-        res.sendFile(__dirname + '/templates/list.html');
-    },
-    renderChat: (req, res) => {
-        res.sendFile(__dirname + '/templates/chat.html');
-    },
-    chatList: (req, res) => {
-        rooms = db.roomList();
-        res.json({
-            rooms: rooms,
-        });
-    },
+const __dirname = path.resolve();
+const roomList = [];
+
+export function renderChatList(req, res) {
+    res.sendFile(__dirname + '/src/templates/room.html');
+}
+
+export function renderChat(req, res) {
+    if(!roomList.includes(req.params.id)) {
+        roomList.push(req.params.id);
+    }
+    res.sendFile(__dirname + '/src/templates/chat.html');
 }

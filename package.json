@@ -1,14 +1,15 @@
 {
-  "name": "talking-on-web",
+  "name": "skychat",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "nodemon --watch src --delay 1 --exec node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baealex/talking-on-web.git"
+    "url": "git+https://github.com/baealex/SkyChat.git"
   },
   "keywords": [
     "socket"
@@ -16,11 +17,14 @@
   "author": "baealex",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/baealex/talking-on-web/issues"
+    "url": "https://github.com/baealex/SkyChat/issues"
   },
-  "homepage": "https://github.com/baealex/talking-on-web#readme",
+  "homepage": "https://github.com/baealex/SkyChat#readme",
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
