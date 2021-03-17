@@ -1,13 +1,15 @@
 import path from 'path';
 
-const __dirname = path.resolve();
-const roomList = [];
+import { Request, Response } from 'express';
 
-export function renderChatList(req, res) {
+const __dirname = path.resolve();
+const roomList: string[] = [];
+
+export function renderChatList(req: Request, res: Response) {
     res.sendFile(__dirname + '/src/templates/room.html');
 }
 
-export function renderChat(req, res) {
+export function renderChat(req: Request, res: Response) {
     if(!roomList.includes(req.params.id)) {
         roomList.push(req.params.id);
     }

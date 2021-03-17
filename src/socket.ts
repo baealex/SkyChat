@@ -1,20 +1,24 @@
-let waitClients = [];
-const roomClients = {};
+import { Socket } from 'socket.io'
 
-function roomEmit(room, eventName, ...args) {
+interface ClientSocket extends Socket {username: string};
+
+let waitClients: ClientSocket[] = [];
+const roomClients: {[key: string]: ClientSocket[]} = {};
+
+function roomEmit(room: string, eventName: string, ...args: any[]) {
     roomClients[room].forEach(client => {
         client.emit(eventName, ...args);
     });
 }
 
-function broadcast(eventName, ...args) {
+function broadcast(eventName: string, ...args: any[]) {
     for(const room in roomClients) {
         roomEmit(room, eventName, ...args);
     }
 }
 
 function getRoomsInfo() {
-    const data = {};
+    const data: {[key: string]: number} = {};
     for(const room in roomClients) {
         data[room] = roomClients[room].length;
     }
@@ -27,7 +31,7 @@ function updateRoomsInfo() {
     })
 }
 
-export default function(socket) {
+export default function(socket: ClientSocket) {
     const { id } = socket;
 
     socket.on('show-room', () => {
