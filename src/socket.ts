@@ -1,9 +1,15 @@
 import { Socket } from 'socket.io'
 
-interface ClientSocket extends Socket {username: string};
+interface ClientSocket extends Socket {
+    username: string;
+}
+
+interface RoomClients {
+    [key: string]: ClientSocket[];
+}
 
 let waitClients: ClientSocket[] = [];
-const roomClients: {[key: string]: ClientSocket[]} = {};
+const roomClients: RoomClients = {};
 
 function roomEmit(room: string, eventName: string, ...args: any[]) {
     roomClients[room].forEach(client => {

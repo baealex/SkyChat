@@ -6,7 +6,11 @@
 	<title>SkyChat - Room List</title>
 	<meta name="theme-color" content="#603020">
 	<link rel="stylesheet" href="/css/main.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+        integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
 </head>
 <body>
 	<div class="container bg-light">
@@ -21,30 +25,6 @@
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
     <script src="/js/select.js"></script>
-    <script src="/js/main.js"></script>
-	<script>
-        socket.emit('show-room');
-
-        socket.on('show-room', function(data) {
-            let result = '';
-            for(const room in data) {
-                result += `<li><a href="/chat/${room}">${room} (${data[room]})</a></li>`
-            }
-            select('.room-list').html(result);
-        });
-
-        function enterOrCreate() {
-			var inputRoom = select('#inputRoom').val();
-			if(inputRoom.length != 0) {
-				location.href = '/chat/' + inputRoom;
-			}
-		}
-
-        select('#inputRoom').on('keydown', function(event) {
-            if(event.keyCode == 13) {
-                enterOrCreate();
-            }
-        });
-	</script>
+    <script src="/js/socket-room.js"></script>
 </body>
 </html>

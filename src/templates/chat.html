@@ -6,7 +6,11 @@
 	<title>SkyChat</title>
 	<meta name="theme-color" content="#603020">
 	<link rel="stylesheet" href="/css/main.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+        integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
 </head>
 <body class="bg-chat">
 	<div id="chatBarrier" class="barrier bg-kakao fill-full">
@@ -28,54 +32,6 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/select.js"></script>
-    <script src="/js/main.js"></script>
-	<script>
-        var room = location.pathname.split('/')[2];
-
-        function sendMessage() {
-            var username = select('#name').val();
-            var text = select('#message').val();
-
-            if(text.length !== 0) {
-                socket.emit('send-message', username, text);
-                select('#message').val('');
-                select('#message').focus();
-            }
-        }
-
-        select('#chatBarrier button').on('click', function(event) {
-            socket.emit('chat-start', room, select('#name').val());
-        });
-
-        select('#message').on('keydown', function(event) {
-            if(event.keyCode == 13) {
-                sendMessage();
-            }
-        });
-
-        socket.on('exist-username', function() {
-            alert('이미 존재하는 닉네임입니다.');
-        });
-
-        socket.on('client-hello', function() {
-            select('#chatBarrier').direct().style.display = "none";
-            select('#chatBox').direct().style.position = "fixed";
-        });
-
-        socket.on('receive-message', function(username, text) {
-            var isMine = username == select('#name').val();
-            var chatLog = select('#chatLog');
-            chatLog.append(`
-                <p${isMine ? ' class="my"' : ''}>
-                    ${isMine ? '' : username + ' : '}${text}
-                </p>
-            `);
-            chatLog.direct().scrollTop = chatLog.direct().scrollHeight;
-        });
-
-        socket.on('change name', function(name) {
-            select('#name').val(name);
-        });
-    </script>
+    <script src="/js/socket-chat.js"></script>
 </body>
 </html>
