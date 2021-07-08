@@ -1,0 +1,13 @@
+version: "2.0"
+
+services:
+  app:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    # volumes:
+    #   - ./server/src:/app
+    # command:
+    #   - "dev"
+    ports:
+      - 12345:3000
