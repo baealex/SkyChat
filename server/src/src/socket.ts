@@ -39,8 +39,10 @@ function updateRoomsInfo() {
 
 export default function(socket: ClientSocket) {
     const { id } = socket;
+    console.log(`USER CONNECTED : ${id}`);
 
     socket.on('show-room', () => {
+        console.log('xxxx');
         waitClients.push(socket);
         socket.emit('show-room', getRoomsInfo());
     });

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist",
+    "start": "cd screen && npm i && npm run deploy && cd .. && tsc && node dist",
     "dev": "nodemon --watch src --delay 1 --exec ts-node src/index.ts"
   },
   "repository": {
