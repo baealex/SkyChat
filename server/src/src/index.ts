@@ -1,23 +1,14 @@
-import express, { Express, Request, Response } from 'express';
-import * as http from 'http';
-import * as socketio from 'socket.io';
+import express from 'express'
 import path from 'path';
+import socketio from 'socket.io'
 
 import logging from './modules/logging'
+import socketController from './socket'
 
-const app = express();
-const server = http.createServer(app);
-const io: socketio.Server = new socketio.default(server);
-
-app
-    .use(express.static(path.resolve('screen/out')))
+const app = express()
     .use(logging())
+    .use(express.static(path.resolve('screen/out')))
+    .listen(3000, () => console.log('listen on :3000'))
 
-io.on('connection', (socket: any) => {
-    const { id } = socket.client;
-    console.log(`User connected: ${id}`);
-});
-
-app.listen(3000, () => {
-	console.log('SERVER RUN IN PORT 3000');
-});
+const io = new socketio.Server(app)
+io.on('connection', socketController)
