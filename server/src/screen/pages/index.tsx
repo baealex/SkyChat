@@ -9,14 +9,16 @@ import roomState from '@state/room'
 
 export default function Home() {
     const router = useRouter()
-    const [ room, setRoom ] = useState('');
+    
+    const [ room, setRoom ] = useState('')
     
     const handleClick = useCallback(() => {
         roomState.setState({
             room,
+        }).then(() => {
+            router.push('/room')
         })
-        router.push('/room')
-    }, [])
+    }, [room])
 
     return (
         <>

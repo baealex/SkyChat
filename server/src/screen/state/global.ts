@@ -7,15 +7,18 @@ export class State {
         this.updater = {};
     }
 
-    setState(newState: object) {
-        Object.assign(this.state, newState);
-        Object.keys(this.updater).forEach(key => {
-            try {
-                this.runUpdater(key);
-            } catch(e) {
-                this.popUpdater(key);
-            }
-        });
+    async setState(newState: object) {
+        return new Promise((resolve) => {
+            Object.assign(this.state, newState);
+            Object.keys(this.updater).forEach(key => {
+                try {
+                    this.runUpdater(key);
+                } catch(e) {
+                    this.popUpdater(key);
+                }
+            });
+            resolve(this.state);
+        })
     }
 
     appendUpdater(fn: Function) {
