@@ -20,7 +20,9 @@ class Main extends App<AppProps> {
                     <link rel="icon" href="/favicon.ico"/>
                 </Head>
 
-                <Component {...pageProps}/>
+                <div className="container">
+                    <Component {...pageProps}/>
+                </div>
             </>
         )
     }

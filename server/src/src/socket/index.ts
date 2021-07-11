@@ -65,13 +65,20 @@ export default function socketManager(io: Server) {
                 profile: userProfile,
             }
 
+            
             roomUsers.push(user)
+            roomUsers.forEach(roomUser => {
+                roomUser.socket.emit('send-message', {
+                    profile: null,
+                    text: `🎉 ${user.profile.name} 등장`,
+                })
+            })
             roomsMap.set(room, roomUsers)
 
             socket.on('send-message', (text: string) => {
-                const users = roomsMap.get(room) || []
-                users.forEach(roomMember => {
-                    roomMember.socket.emit('send-message', {
+                const roomUsers = roomsMap.get(room) || []
+                roomUsers.forEach(roomUser => {
+                    roomUser.socket.emit('send-message', {
                         profile: user.profile,
                         text: text,
                     })
@@ -82,6 +89,12 @@ export default function socketManager(io: Server) {
                 const roomUsers = roomsMap.get(room) || []
                 roomsMap.set(room, roomUsers.filter(roomUser =>
                     roomUser.profile.name != user.profile.name))
+                roomUsers.forEach(roomUser => {
+                    roomUser.socket.emit('send-message', {
+                        profile: null,
+                        text: `😥 ${user.profile.name} 퇴장`,
+                    })
+                })
                 console.log(`USER DISCONNETED : ${id}`)
             })
         })
