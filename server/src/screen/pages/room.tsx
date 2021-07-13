@@ -50,7 +50,7 @@ export default function Home() {
         })
         
         return () => {
-            location.reload()
+            socket.emit('exit-the-room')
         }
     }, [])
 

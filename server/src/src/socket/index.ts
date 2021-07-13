@@ -39,11 +39,29 @@ function randint(min: number, max: number) {
 
 export default function socketManager(io: Server) {
     io.on('connection', (socket) => {
-        let roomName = ''
-        const { id } = socket;
+        let user: User
+        let roomName: string
+        const { id } = socket
         console.log(`USER CONNECTED : ${id}`)
 
+        const disconnect = () => {
+            const roomUsers = roomsMap.get(roomName) || []
+            roomsMap.set(roomName, roomUsers.filter(roomUser =>
+                roomUser.socket.id != id))
+            roomUsers.forEach(roomUser => {
+                roomUser.socket.emit('send-message', {
+                    profile: null,
+                    text: `😥 ${user.profile.name} 퇴장`,
+                })
+            })
+            roomName = ''
+        }
+
+        socket.on('exit-the-room', disconnect)
         socket.on('enter-the-room', (room) => {
+            if (roomName) {
+                disconnect()
+            }
             roomName = room;
             const roomUsers = roomsMap.get(room) || []
             const usernames = roomUsers.map(roomUser => roomUser.profile.name)
@@ -62,11 +80,10 @@ export default function socketManager(io: Server) {
                 }
             }
             socket.emit('assign-username', userProfile)
-            const user: User = {
+            user = {
                 socket: socket,
                 profile: userProfile,
             }
-            
             roomUsers.push(user)
             roomUsers.forEach(roomUser => {
                 roomUser.socket.emit('send-message', {
@@ -75,31 +92,23 @@ export default function socketManager(io: Server) {
                 })
             })
             roomsMap.set(room, roomUsers)
+        })
 
-            socket.on('send-message', (text: string) => {
-                const roomUsers = roomsMap.get(room) || []
+        socket.on('send-message', (text: string) => {
+            if (roomName) {
+                const roomUsers = roomsMap.get(roomName) || []
                 roomUsers.forEach(roomUser => {
                     roomUser.socket.emit('send-message', {
                         profile: user.profile,
                         text: text,
                     })
                 })
-            })
+            }
         })
 
         socket.on('disconnect', () => {
             if (roomName) {
-                const roomUsers = roomsMap.get(roomName) || []
-                const [ user ] = roomUsers.filter(roomUser =>
-                    roomUser.socket.id == id)
-                roomsMap.set(roomName, roomUsers.filter(roomUser =>
-                    roomUser.socket.id != id))
-                roomUsers.forEach(roomUser => {
-                    roomUser.socket.emit('send-message', {
-                        profile: null,
-                        text: `😥 ${user.profile.name} 퇴장`,
-                    })
-                })
+                disconnect()
             }
             console.log(`USER DISCONNETED : ${id}`)
         })
