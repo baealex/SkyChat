@@ -24,7 +24,7 @@ interface Message {
 export default function Home() {
     const router = useRouter()
 
-    const input = useRef<HTMLInputElement>(null);
+    const input = useRef<HTMLInputElement>(null)
 
     const [ _, setProfile ] = useState<Profile | null>()
     const [ messages, setMessages ] = useState<Message[]>([])
