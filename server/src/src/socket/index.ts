@@ -46,14 +46,18 @@ export default function socketManager(io: Server) {
 
         const disconnect = () => {
             const roomUsers = roomsMap.get(roomName) || []
-            roomsMap.set(roomName, roomUsers.filter(roomUser =>
-                roomUser.socket.id != id))
-            roomUsers.forEach(roomUser => {
-                roomUser.socket.emit('send-message', {
-                    profile: null,
-                    text: `😥 ${user.profile.name} 퇴장`,
+            const leftUsers = roomUsers.filter(roomUser => roomUser.socket.id != id)
+            if (leftUsers.length > 0) {
+                roomsMap.set(roomName, leftUsers)
+                leftUsers.forEach(roomUser => {
+                    roomUser.socket.emit('send-message', {
+                        profile: null,
+                        text: `😥 ${user.profile.name} 퇴장`,
+                    })
                 })
-            })
+            } else {
+                roomsMap.delete(roomName)
+            }
             roomName = ''
         }
 
