@@ -37,23 +37,20 @@ export default function Home() {
         }
 
         socket.emit('enter-the-room', roomState.state.room)
-        socket.on('room-is-full', () => {
-            router.push('/').then(() => {
-                socket.off('room-is-full')
-            })
-            return;
+        socket.once('room-is-full', () => {
+            router.push('/')
+            return
         })
-        socket.on('assign-username', (profile: Profile) => {
+        socket.once('assign-username', (profile: Profile) => {
             setProfile(profile)
         })
         socket.on('send-message', (message: Message) => {
             setMessages((prevMessages) => prevMessages.concat(message))
             window.scrollTo(0, document.body.scrollHeight)
         })
+        
         return () => {
-            socket.off('assign-username')
-            socket.off('room-is-full')
-            socket.off('send-message')
+            location.reload()
         }
     }, [])
 

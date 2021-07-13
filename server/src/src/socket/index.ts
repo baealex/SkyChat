@@ -39,10 +39,12 @@ function randint(min: number, max: number) {
 
 export default function socketManager(io: Server) {
     io.on('connection', (socket) => {
+        let roomName = ''
         const { id } = socket;
         console.log(`USER CONNECTED : ${id}`)
 
         socket.on('enter-the-room', (room) => {
+            roomName = room;
             const roomUsers = roomsMap.get(room) || []
             const usernames = roomUsers.map(roomUser => roomUser.profile.name)
 
@@ -64,7 +66,6 @@ export default function socketManager(io: Server) {
                 socket: socket,
                 profile: userProfile,
             }
-
             
             roomUsers.push(user)
             roomUsers.forEach(roomUser => {
@@ -84,19 +85,23 @@ export default function socketManager(io: Server) {
                     })
                 })
             })
+        })
 
-            socket.on('disconnect', () => {
-                const roomUsers = roomsMap.get(room) || []
-                roomsMap.set(room, roomUsers.filter(roomUser =>
-                    roomUser.profile.name != user.profile.name))
+        socket.on('disconnect', () => {
+            if (roomName) {
+                const roomUsers = roomsMap.get(roomName) || []
+                const [ user ] = roomUsers.filter(roomUser =>
+                    roomUser.socket.id == id)
+                roomsMap.set(roomName, roomUsers.filter(roomUser =>
+                    roomUser.socket.id != id))
                 roomUsers.forEach(roomUser => {
                     roomUser.socket.emit('send-message', {
                         profile: null,
                         text: `😥 ${user.profile.name} 퇴장`,
                     })
                 })
-                console.log(`USER DISCONNETED : ${id}`)
-            })
+            }
+            console.log(`USER DISCONNETED : ${id}`)
         })
     })
 }
