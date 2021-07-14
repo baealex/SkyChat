@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd screen && npm i && npm rebuild node-sass && npm run deploy && cd .. && tsc && node dist",
-    "dev": "nodemon --watch src --delay 1 --exec ts-node src/index.ts"
+    "screen-init": "cd screen && npm i && npm run deploy && cd ..",
+    "screen-build": "cd screen && npm run deploy && cd ..",
+    "screen-dev": "nodemon --watch screen/components --watch screen/modules --watch screen/pages --watch screen/styles --watch screen/public --watch screen/state --ext tsx,ts --delay 3 --exec npm run screen-build",
+    "dev": "nodemon --watch src --delay 1 --exec ts-node src/index.ts",
+    "start": "npm run screen-init && tsc && node dist"
   },
   "repository": {
     "type": "git",
