@@ -1,0 +1,32 @@
+@import 'var';
+
+.input-group {
+    @include MAIN_SHADOW;
+
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 100px;
+    padding: 8px 8px 8px 16px;
+
+    input {
+        flex: 1;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        transition: opacity 0.5s;
+        background-color: $COLOR_DEFAULT_PRIMARY;
+        padding: 8px 16px;
+        border-radius: 100px;
+        opacity: 0;
+        border: none;
+        outline: none;
+
+        &.show {
+            opacity: 1;
+        }
+    }
+}

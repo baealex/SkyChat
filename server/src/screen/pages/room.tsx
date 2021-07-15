@@ -7,7 +7,7 @@ import {
 } from 'react'
 
 import socket from '@modules/socket'
-import roomState from '@state/room'
+import { roomState } from '@state/room'
 import { Card } from '@components/atoms'
 
 interface Profile {

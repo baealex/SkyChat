@@ -1,0 +1,9 @@
+.logo {
+    position: absolute;
+    width: 350px;
+
+    &.bottom-left {
+        right: 15px;
+        bottom: 15px;
+    }
+}

@@ -1,5 +1,5 @@
-export class State {
-    state: any;
+export class State<T> {
+    state: T | any;
     private updater: any;
 
     constructor() {
@@ -7,7 +7,7 @@ export class State {
         this.updater = {};
     }
 
-    async setState(newState: object) {
+    async setState(newState: T) {
         return new Promise((resolve) => {
             Object.assign(this.state, newState);
             Object.keys(this.updater).forEach(key => {

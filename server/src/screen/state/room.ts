@@ -1,6 +1,10 @@
 import { State } from './global'
 
-class RoomState extends State {
+interface RoomState {
+    room: string;
+}
+
+class Room extends State<RoomState> {
     constructor() {
         super();
 
@@ -10,4 +14,4 @@ class RoomState extends State {
     }
 }
 
-export default new RoomState()
+export const roomState = new Room()
